@@ -3,6 +3,8 @@ class IndexMinHeap:
     def __init__(self, capacity):
         self.data = [0 for _ in range(capacity + 1)]
         self.indexes = [0 for _ in range(capacity + 1)]
+        self.reverse = [0 for _ in range(capacity + 1)]
+
         self.count = 0
         self.capacity = capacity
 
@@ -27,6 +29,10 @@ class IndexMinHeap:
     def __shift_up(self, k):
         while k > 1 and self.data[k // 2] > self.data[k]:
             self.data[k // 2], self.data[k] = self.data[k], self.data[k // 2]
+
+            self.reverse[self.indexes[k // 2]] = k // 2
+            self.reverse[self.indexes[k]] = k
+
             k //= 2
 
     def extract_min(self):
@@ -36,6 +42,9 @@ class IndexMinHeap:
         ret = self.data[self.indexes[1]]
         # 交换的是索引
         self.indexes[1], self.indexes[self.count] = self.indexes[self.count], self.indexes[1]
+
+        self.reverse[self.indexes[self.count]] = 0
+
         self.count -= 1
         self.__shift_down(1)
         return ret
@@ -49,6 +58,10 @@ class IndexMinHeap:
             if self.data[self.indexes[k]] <= self.data[self.indexes[j]]:
                 break
             self.indexes[k], self.indexes[j] = self.indexes[j], self.indexes[k]
+
+            self.reverse[self.indexes[k]] = k
+            self.reverse[self.indexes[j]] = j
+
             k = j
 
     # 新增方法
@@ -75,11 +88,10 @@ class IndexMinHeap:
         # 重点：下面这一步是找原来数组中索引是 i 的元素
         # 在索引数组中的索引是几，这是一个唯一值，找到即返回
         # 优化：可以引入反向查找技术优化
-        for j in range(1, self.count + 1):
-            if self.indexes[j] == i:
-                self.__shift_down(j)
-                self.__shift_up(j)
-                return
+        j = self.reverse[i]
+
+        self.__shift_down(j)
+        self.__shift_up(j)
 
 
 if __name__ == '__main__':

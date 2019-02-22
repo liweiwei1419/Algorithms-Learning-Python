@@ -1,4 +1,3 @@
-# 通过 LeetCode 第 215 题、第 295 题测试
 class MaxHeap:
     def __init__(self, capacity):
         # 我们这个版本的实现中，0 号索引是不存数据的，这一点一定要注意
@@ -88,19 +87,92 @@ class MaxHeap:
         self.data[k] = temp
 
 
-if __name__ == '__main__':
-    max_heap = MaxHeap(5)
-    max_heap.insert(3)
-    print(max_heap.data[1])
-    max_heap.insert(5)
-    print(max_heap.data[1])
-    max_heap.insert(1)
-    print(max_heap.data[1])
-    max_heap.insert(8)
-    print(max_heap.data[1])
-    max_heap.insert(7)
-    print(max_heap.data[1])
-    # max_heap.insert(12)
+class MinHeap:
 
-    while not max_heap.is_empty():
-        print('取出', max_heap.extract_max())
+    # 把最大堆实现中不等号的方向反向就可以了
+
+    def __init__(self, capacity):
+        # 因为数组从索引 1 开始存放数值
+        # 所以开辟 capacity + 1 这么多大小的空间
+        self.data = [0 for _ in range(capacity + 1)]
+        self.count = 0
+        self.capacity = capacity
+
+    def size(self):
+        return self.count
+
+    def is_empty(self):
+        return self.count == 0
+
+    def insert(self, item):
+        if self.count + 1 > self.capacity:
+            raise Exception('堆的容量不够了')
+        self.count += 1
+        self.data[self.count] = item
+        self.__swim(self.count)
+
+    def __swim(self, k):
+        # 上浮，与父节点进行比较
+        temp = self.data[k]
+        while k > 1 and self.data[k // 2] > temp:
+            self.data[k] = self.data[k // 2]
+            k //= 2
+        self.data[k] = temp
+
+    def extract_min(self):
+        if self.count == 0:
+            raise Exception('堆里没有可以取出的元素')
+        ret = self.data[1]
+        self.data[1] = self.data[self.count]
+        self.count -= 1
+        self.__sink(1)
+        return ret
+
+    def __sink(self, k):
+        # 下沉
+        temp = self.data[k]
+        while 2 * k <= self.count:
+            j = 2 * k
+            if j + 1 <= self.count and self.data[j + 1] < self.data[j]:
+                j += 1
+            if temp <= self.data[j]:
+                break
+            self.data[k] = self.data[j]
+            k = j
+        self.data[k] = temp
+
+
+class MedianFinder:
+
+    def __init__(self):
+        """
+        initialize your data structure here.
+        """
+        self.max_heap = MaxHeap(10000)
+        self.min_heap = MinHeap(10000)
+
+    def addNum(self, num: 'int') -> 'None':
+        # 大顶堆先进一个元素
+        self.max_heap.insert(num);
+        # 然后从大顶堆里出一个元素到小顶堆
+        self.min_heap.insert(self.max_heap.extract_max())
+        if self.max_heap.size() < self.min_heap.size():
+            # 如果大顶堆的元素少于小顶堆
+            # 就要从小顶堆出一个元素到大顶堆
+            self.max_heap.insert(self.min_heap.extract_min())
+
+    def findMedian(self) -> 'float':
+        if self.max_heap.size() == self.min_heap.size():
+            return (self.max_heap.data[1] + self.min_heap.data[1]) / 2
+        else:
+            return self.max_heap.data[1]
+
+
+# Your MedianFinder object will be instantiated and called as such:
+# obj = MedianFinder()
+# obj.addNum(num)
+# param_2 = obj.findMedian()
+
+if __name__ == '__main__':
+    solution = MedianFinder()
+    

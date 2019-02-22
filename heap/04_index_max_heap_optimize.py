@@ -32,7 +32,7 @@ class IndexMaxHeap:
         while k > 1 and self.data[self.indexes[k // 2]] < self.data[self.indexes[k]]:
             self.indexes[k // 2], self.indexes[k] = self.indexes[k], self.indexes[k // 2]
 
-            self.reverse[self.indexes[k//2]] = k//2
+            self.reverse[self.indexes[k // 2]] = k // 2
             self.reverse[self.indexes[k]] = k
 
             k //= 2
@@ -43,7 +43,7 @@ class IndexMaxHeap:
         ret = self.data[self.indexes[1]]
         self.indexes[1], self.indexes[self.count] = self.indexes[self.count], self.indexes[1]
 
-        self.reverse[self.indexes[self.count]]=0
+        self.reverse[self.indexes[self.count]] = 0
 
         self.count -= 1
         self.__shift_down(1)
@@ -58,8 +58,8 @@ class IndexMaxHeap:
                 break
             self.indexes[k], self.indexes[j] = self.indexes[j], self.indexes[k]
 
-            self.reverse[self.indexes[k]]=k
-            self.reverse[self.indexes[j]]=j
+            self.reverse[self.indexes[k]] = k
+            self.reverse[self.indexes[j]] = j
 
             k = j
 
@@ -104,4 +104,3 @@ if __name__ == '__main__':
     print(index_max_heap.indexes)
     print(index_max_heap.reverse)
     print(index_max_heap.data)
-
