@@ -89,7 +89,7 @@ class MaxHeap:
 
 
 if __name__ == '__main__':
-    max_heap = MaxHeap(5)
+    max_heap = MaxHeap(6)
     max_heap.insert(3)
     print(max_heap.data[1])
     max_heap.insert(5)
@@ -100,7 +100,7 @@ if __name__ == '__main__':
     print(max_heap.data[1])
     max_heap.insert(7)
     print(max_heap.data[1])
-    # max_heap.insert(12)
+    max_heap.insert(12)
 
     while not max_heap.is_empty():
         print('取出', max_heap.extract_max())
