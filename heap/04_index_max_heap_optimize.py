@@ -1,10 +1,10 @@
-# 根据最大堆写出最大索引堆
-# 注释中只写出了变化的部分
+#
 class IndexMaxHeap:
     def __init__(self, capacity):
         self.data = [None for _ in range(capacity + 1)]
         # 初值设置为 0 ，表示该位置还没有放置元素
         self.indexes = [0 for _ in range(capacity + 1)]
+        self.reverse = [0 for _ in range(capacity + 1)]
         self.count = 0
         self.capacity = capacity
 
@@ -20,24 +20,31 @@ class IndexMaxHeap:
             raise Exception('堆的容量不够了')
         i += 1
         self.data[i] = item
+
         # 这一步很关键，在内部索引数组的最后设置索引数组的索引
         self.indexes[self.count + 1] = i
+        self.reverse[i] = self.count + 1
+
         self.count += 1
         self.__shift_up(self.count)
 
     def __shift_up(self, k):
-        # 比较的时候，上面套一层 indexes，交换的是 indexes
         while k > 1 and self.data[self.indexes[k // 2]] < self.data[self.indexes[k]]:
             self.indexes[k // 2], self.indexes[k] = self.indexes[k], self.indexes[k // 2]
+
+            self.reverse[self.indexes[k//2]] = k//2
+            self.reverse[self.indexes[k]] = k
+
             k //= 2
 
     def extract_max(self):
         if self.count == 0:
             raise Exception('堆里没有可以取出的元素')
-        # 里面套一层 indexes
         ret = self.data[self.indexes[1]]
-        # 交换的是索引
         self.indexes[1], self.indexes[self.count] = self.indexes[self.count], self.indexes[1]
+
+        self.reverse[self.indexes[self.count]]=0
+
         self.count -= 1
         self.__shift_down(1)
         return ret
@@ -45,12 +52,15 @@ class IndexMaxHeap:
     def __shift_down(self, k):
         while 2 * k <= self.count:
             j = 2 * k
-            # 比较的是 data ，交换的是 indexes
             if j + 1 <= self.count and self.data[self.indexes[j + 1]] > self.data[self.indexes[j]]:
                 j = j + 1
             if self.data[self.indexes[k]] >= self.data[self.indexes[j]]:
                 break
             self.indexes[k], self.indexes[j] = self.indexes[j], self.indexes[k]
+
+            self.reverse[self.indexes[k]]=k
+            self.reverse[self.indexes[j]]=j
+
             k = j
 
     # 新增方法
@@ -77,11 +87,10 @@ class IndexMaxHeap:
         # 重点：下面这一步是找原来数组中索引是 i 的元素
         # 在索引数组中的索引是几，这是一个唯一值，找到即返回
         # 优化：可以引入反向查找技术优化
-        for j in range(1, self.count + 1):
-            if self.indexes[j] == i:
-                self.__shift_down(j)
-                self.__shift_up(j)
-                return
+
+        j = self.reverse[i]
+        self.__shift_down(j)
+        self.__shift_up(j)
 
 
 if __name__ == '__main__':
@@ -91,5 +100,8 @@ if __name__ == '__main__':
 
     for i, val in enumerate(data):
         index_max_heap.insert(i, val)
+    print([i for i in range(10)])
     print(index_max_heap.indexes)
+    print(index_max_heap.reverse)
     print(index_max_heap.data)
+
