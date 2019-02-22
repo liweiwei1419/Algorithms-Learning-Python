@@ -42,6 +42,9 @@ class IndexMaxHeap:
             raise Exception('堆里没有可以取出的元素')
         ret = self.data[self.indexes[1]]
         self.indexes[1], self.indexes[self.count] = self.indexes[self.count], self.indexes[1]
+        self.reverse[self.indexes[1]] = 1
+        self.reverse[self.indexes[self.count]] = self.count
+
 
         self.reverse[self.indexes[self.count]] = 0
 

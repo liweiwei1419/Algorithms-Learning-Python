@@ -1,3 +1,4 @@
+# 通过 LeetCode 第 23 题测试
 class IndexMinHeap:
 
     def __init__(self, capacity):
@@ -25,8 +26,8 @@ class IndexMinHeap:
         self.__shift_up(self.count)
 
     def __shift_up(self, k):
-        while k > 1 and self.data[k // 2] > self.data[k]:
-            self.data[k // 2], self.data[k] = self.data[k], self.data[k // 2]
+        while k > 1 and self.data[self.indexes[k // 2]] > self.data[self.indexes[k]]:
+            self.indexes[k // 2], self.indexes[k] = self.indexes[k], self.indexes[k // 2]
             k //= 2
 
     def extract_min(self):
@@ -60,7 +61,10 @@ class IndexMinHeap:
         self.count -= 1
         self.__shift_down(1)
         return ret
-        # 新增方法
+
+    # 新增方法
+    def get_min_index(self):
+        return self.indexes[1] - 1
 
     def get_item(self, i):
         # 内部数组的索引比用户视角多 1
@@ -83,18 +87,4 @@ class IndexMinHeap:
 
 
 if __name__ == '__main__':
-    min_heap = IndexMinHeap(5)
-    min_heap.insert(3)
-    print(min_heap.data[1])
-    min_heap.insert(5)
-    print(min_heap.data[1])
-    min_heap.insert(1)
-    print(min_heap.data[1])
-    min_heap.insert(8)
-    print(min_heap.data[1])
-    min_heap.insert(7)
-    print(min_heap.data[1])
-    # max_heap.insert(12)
-
-    while not min_heap.is_empty():
-        print('取出', min_heap.extract_max())
+    pass

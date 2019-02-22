@@ -1,4 +1,3 @@
-# 通过 LeetCode 第 23 题测试
 class IndexMinHeap:
 
     def __init__(self, capacity):
@@ -115,19 +114,85 @@ class IndexMinHeap:
         self.__shift_up(j)
 
 
-if __name__ == '__main__':
-    min_heap = IndexMinHeap(5)
-    min_heap.insert(3)
-    print(min_heap.data[1])
-    min_heap.insert(5)
-    print(min_heap.data[1])
-    min_heap.insert(1)
-    print(min_heap.data[1])
-    min_heap.insert(8)
-    print(min_heap.data[1])
-    min_heap.insert(7)
-    print(min_heap.data[1])
-    # max_heap.insert(12)
+# Definition for singly-linked list.
+class ListNode:
+    def __init__(self, x):
+        self.val = x
+        self.next = None
 
-    while not min_heap.is_empty():
-        print('取出', min_heap.extract_max())
+
+class Solution:
+    def mergeKLists(self, lists: 'List[ListNode]') -> 'ListNode':
+
+        # 这一步是去掉空链表
+        new_lists = []
+        for i in range(len(lists)):
+            if lists[i]:
+                new_lists.append(lists[i])
+
+        size = len(new_lists)
+        index_min_heap = IndexMinHeap(size)
+        for i in range(size):
+            index_min_heap.insert(i,new_lists[i].val)
+
+        dummy = ListNode(-1)
+        cur = dummy
+        while index_min_heap.size() > 0:
+            index = index_min_heap.get_min_index()
+
+            print(index, index_min_heap.data,new_lists[index].val)
+            cur.next = ListNode(new_lists[index].val)
+            cur = cur.next
+            if new_lists[index].next is None:
+                # 如果后面没有元素，就可以删掉了
+                index_min_heap.extract_min_index()
+            else:
+                index_min_heap.change(index, new_lists[index].next.val)
+                new_lists[index] = new_lists[index].next
+        return dummy.next
+
+
+def create_linked_list(nums):
+    if len(nums) == 0:
+        return None
+    head = ListNode(nums[0])
+    cur = head
+    for i in range(1, len(nums)):
+        cur.next = ListNode(nums[i])
+        cur = cur.next
+    return head
+
+
+def print_linked_list(list_node):
+    if list_node is None:
+        return
+
+    cur = list_node
+    while cur:
+        print(cur.val, '->', end=' ')
+        cur = cur.next
+    print('null')
+
+
+if __name__ == '__main__':
+    sorted_linked1 = create_linked_list([i for i in range(1, 20, 3)])
+    sorted_linked2 = create_linked_list([i for i in range(2, 20, 3)])
+    sorted_linked3 = create_linked_list([i for i in range(3, 20, 3)])
+
+    print_linked_list(sorted_linked1)
+    print_linked_list(sorted_linked2)
+    print_linked_list(sorted_linked3)
+
+    solution = Solution()
+
+    result = solution.mergeKLists(lists=[sorted_linked1, sorted_linked2, sorted_linked3])
+    print_linked_list(result)
+
+    sorted_linked1 = create_linked_list([1,2,3])
+    sorted_linked2 = create_linked_list([4,5,6,7])
+    sorted_linked3 = create_linked_list([])
+
+    solution = Solution()
+
+    result = solution.mergeKLists(lists=[sorted_linked1, sorted_linked2,sorted_linked3])
+    print_linked_list(result)
