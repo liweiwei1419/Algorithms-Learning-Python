@@ -1,3 +1,4 @@
+# 这里实现的下沉方法可以限制在一个数组的前缀中下沉，通过 end 索引控制
 def __sink(nums, end, k):
     # end ：数组 nums 的尾索引，
     # __sink 方法维持 nums[0:end]，包括 nums[end] 在内堆有序
@@ -16,7 +17,7 @@ def __sink(nums, end, k):
     nums[k] = temp
 
 
-def __heapy(nums):
+def __heapify(nums):
     l = len(nums)
     for i in range((l - 1) // 2, -1, -1):
         __sink(nums, l - 1, i)
@@ -24,7 +25,7 @@ def __heapy(nums):
 
 def heap_sort(nums):
     l = len(nums)
-    __heapy(nums)
+    __heapify(nums)
 
     for i in range(l - 1, 0, -1):
         nums[0], nums[i] = nums[i], nums[0]
