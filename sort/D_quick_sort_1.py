@@ -18,6 +18,8 @@ from sort.sort_helper import test_your_sort_algorithm
 
 
 def partition(nums, left, right):
+    # 优化2：随机选择数组的一个元素进行交换
+    # 针对近乎有序的数组的深度递归
     pivot = nums[left]
     j = left
     for i in range(left + 1, right + 1):
@@ -29,6 +31,7 @@ def partition(nums, left, right):
 
 
 def __quick_sort(nums, left, right):
+    # 优化1：小区间使用插入排序
     if left >= right:
         return
     p_idx = partition(nums, left, right)

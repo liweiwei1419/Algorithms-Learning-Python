@@ -2,10 +2,10 @@
 # 在 partition 的过程中使用指针对撞的
 # 特别注意，与标定点相等的元素的处理
 
-import random
 
-
-# 双路快排：随机将与标定点相等的元素分配到左边和右边
+# 双路快排：
+# 随机将与标定点相等的元素分配到左边和右边
+# 针对有许多重复键值的数组进行排序
 
 
 # 指针对撞的 __partition_2
@@ -21,6 +21,7 @@ def __partition_2(nums, left, right):
     i = left + 1
     j = right
     while True:
+        # 针对索引进行判断的时候，要考虑是否越界
         while i <= right and nums[i] < p:
             i += 1
         while j >= left + 1 and nums[j] > p:

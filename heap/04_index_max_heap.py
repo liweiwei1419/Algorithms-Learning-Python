@@ -83,6 +83,19 @@ class IndexMaxHeap:
                 self.__shift_up(j)
                 return
 
+    # 为 LeetCode 第 239 题新增的方法，看一眼此时索引堆的最大索引是多少（没用上，我想多了，留到以后用吧）
+    def peek_max_index(self):
+        if self.count == 0:
+            raise Exception('堆里没有可以取出的元素')
+        # 注意：与用户认为的索引值有一个偏差
+        return self.indexes[1] - 1
+
+    # 为 LeetCode 第 239 题新增的方法，看一眼此时索引堆的最大值是多少
+    def peek_max_value(self):
+        if self.count == 0:
+            raise Exception('堆里没有可以取出的元素')
+        return self.data[self.indexes[1]]
+
 
 if __name__ == '__main__':
     index_max_heap = IndexMaxHeap(10)
