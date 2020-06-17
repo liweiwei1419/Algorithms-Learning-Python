@@ -1,41 +1,33 @@
 # 查找第一个大于等于给定值的元素
 def binary_search_3(nums, target):
     size = len(nums)
-    l = 0
-    # 注意，r 向右边加了 1 位，因为 target 可能比 nums[-1] 还要大
-    r = size
-    while l < r:
-        mid = l + ((r - l) >> 1)
-        # 1,3,3,3,3,4,5
+    left = 0
+    # 注意，right 向右边加了 1 位，因为 target 可能比 nums[-1] 还要大
+    right = size
+    while left < right:
+        mid = left + (right - left) // 2
         if nums[mid] >= target:
-            r = mid
+            right = mid
         else:
-            assert nums[mid] < target
-            # mid 有可能是最优解
-            l = mid + 1
-    # 特判
-    # if l == size - 1 and nums[-1] < target:
-    #     return size
-    return l
+            left = mid + 1
+    return left
 
 
 def binary_search_3_1(nums, target):
     size = len(nums)
-    l = 0
-    r = size - 1
-    while l < r:
-        mid = l + ((r - l) >> 1)
+    left = 0
+    right = size - 1
+    while left < right:
+        mid = left + (right - left) // 2
         # 1,3,3,3,3,4,5
         if nums[mid] >= target:
-            r = mid
+            right = mid
         else:
-            assert nums[mid] < target
-            # mid 有可能是最优解
-            l = mid + 1
+            left = mid + 1
     # 特判
-    if l == size - 1 and nums[-1] < target:
+    if left == size - 1 and nums[-1] < target:
         return size
-    return l
+    return left
 
 
 if __name__ == '__main__':

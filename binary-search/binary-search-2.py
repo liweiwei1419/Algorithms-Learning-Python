@@ -1,20 +1,18 @@
 # 查找最后一个值等于给定值的元素
 def binary_search_2(nums, target):
     size = len(nums)
-    l = 0
-    r = size - 1
-    while l < r:
-        mid = l + ((r - l + 1) >> 1)
-        # 1,2,3,3,3,3,4,5
+    left = 0
+    right = size - 1
+    while left < right:
+        # mid 有可能是最优解
+        mid = left + (right - left + 1) // 2
         if nums[mid] > target:
-            r = mid - 1
+            right = mid - 1
         else:
-            assert nums[mid] <= target
-            # mid 有可能是最优解
-            l = mid
-    if nums[l] != target:
+            left = mid
+    if nums[left] != target:
         return -1
-    return l
+    return left
 
 
 if __name__ == '__main__':

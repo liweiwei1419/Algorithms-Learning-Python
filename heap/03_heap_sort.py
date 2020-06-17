@@ -1,5 +1,5 @@
 # 这里实现的下沉方法可以限制在一个数组的前缀中下沉，通过 end 索引控制
-def __sink(nums, end, k):
+def __sift_down(nums, end, k):
     # end ：数组 nums 的尾索引，
     # __sink 方法维持 nums[0:end]，包括 nums[end] 在内堆有序
     assert k <= end
@@ -18,18 +18,18 @@ def __sink(nums, end, k):
 
 
 def __heapify(nums):
-    l = len(nums)
-    for i in range((l - 1) // 2, -1, -1):
-        __sink(nums, l - 1, i)
+    size = len(nums)
+    for i in range((size - 1) // 2, -1, -1):
+        __sift_down(nums, size - 1, i)
 
 
 def heap_sort(nums):
-    l = len(nums)
+    size = len(nums)
     __heapify(nums)
 
-    for i in range(l - 1, 0, -1):
+    for i in range(size - 1, 0, -1):
         nums[0], nums[i] = nums[i], nums[0]
-        __sink(nums, i - 1, 0)
+        __sift_down(nums, i - 1, 0)
 
 
 def judge_max_heap(nums):
@@ -52,5 +52,3 @@ if __name__ == '__main__':
     heap_sort(nums)
     print('排序结果', nums)
 
-    from sort.sort_helper import test_your_sort_algorithm
-    # test_your_sort_algorithm(heap_sort, 1, 20000, 10000)
